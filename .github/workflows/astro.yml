@@ -7,7 +7,7 @@ on:
 
 # Allow only one concurrent deployment, skipping runs queued between an
 # in-progress run and the latest queued one. Do not cancel in-progress runs
-# so a deploy already in flight always finishes.
+# so a deploy already in flight always finishes. 
 concurrency:
   group: "pages"
   cancel-in-progress: false
