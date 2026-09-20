@@ -1,0 +1,13 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import { site } from '@/site.config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-[var(--color-subtle)] py-10 text-sm text-[var(--color-muted)] dark:border-[var(--color-subtle-dark)] dark:text-[var(--color-muted-dark)]">
+  <div class="container-wide flex flex-col items-center justify-between gap-4 sm:flex-row">
+    <p>© {year} {site.name}. Built with Astro.</p>
+    <SocialLinks size="sm" />
+  </div>
+</footer>

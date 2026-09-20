@@ -1,0 +1,173 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import InlineEmailSignupForm from "@/components/InlineEmailSignupForm.astro";
+
+const allPosts = await getCollection("blog");
+const now = new Date();
+const posts = allPosts.filter((post) => new Date(post.data.date) <= now);
+
+
+const categoryCounts = new Map<string, number>();
+for (const p of posts) {
+  categoryCounts.set(
+    p.data.category,
+    (categoryCounts.get(p.data.category) ?? 0) + 1
+  );
+}
+const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+const groupBy = <T,>(
+  list: T[],
+  keyGetter: (item: T) => string
+): { [key: string]: T[] } => {
+  const groups: { [key: string]: T[] } = {};
+  list.forEach((item) => {
+    const key = keyGetter(item);
+    const collection = groups[key];
+    if (!collection) {
+      groups[key] = [item];
+    } else {
+      collection.push(item);
+    }
+  });
+  return groups;
+};
+---
+
+<Base title="Blog" description="Views on Passion and Technology.">
+  <div class="container-wide py-12 sm:py-16">
+    <h1 class="text-2xl font-bold">Vikram's Blog</h1>
+    <InlineEmailSignupForm />
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      <button
+        type="button"
+        data-filter="all"
+        class="filter-btn active rounded-full border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-1 font-mono text-xs uppercase tracking-wider text-white transition-colors dark:border-[var(--color-accent-dark)] dark:bg-[var(--color-accent-dark)] dark:text-[var(--color-bg-dark)]"
+      >
+        All ({posts.length})
+      </button>
+      {
+        categories.map(([c, n]) => (
+          <button
+            type="button"
+            data-filter={c}
+            class="filter-btn rounded-full border border-[var(--color-subtle)] px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--color-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] dark:border-[var(--color-subtle-dark)] dark:text-[var(--color-muted-dark)] dark:hover:border-[var(--color-accent-dark)] dark:hover:text-[var(--color-accent-dark)]"
+          >
+            {c} ({n})
+          </button>
+        ))
+      }
+    </div>
+
+    <div>
+      {
+        Object.entries(
+          groupBy(posts, (post) =>
+            String(new Date(post.data.date).getFullYear())
+          )
+        )
+          .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+          .map(([year, yearPosts]) => {
+            const byMonth = groupBy(yearPosts, (post) =>
+              String(new Date(post.data.date).getMonth())
+            );
+
+            return (
+              <div class="blog-year-group" data-year={year}>
+                <h2 class="text-xl text-[var(--color-muted)] dark:text-[var(--color-muted-dark)] font-bold mt-8 mb-2 pb-1 border-b-2 border-[var(--color-subtle)] dark:border-[var(--color-subtle-dark)]">
+                  {year}
+                </h2>
+                {Object.entries(byMonth)
+                  .sort(([mA], [mB]) => Number(mB) - Number(mA))
+                  .map(([monthNum, monthPosts], monthIndex) => {
+                    const monthName = new Date(Number(year), Number(monthNum), 1)
+                      .toLocaleDateString("en-US", { month: "long" });
+                    monthPosts = monthPosts.sort(
+                      (a, b) =>
+                        new Date(b.data.date).getTime() -
+                        new Date(a.data.date).getTime()
+                    );
+                    return (
+                      <div class="blog-month-group">
+                        {monthIndex > 0 && (
+                          <div class="border-t border-[var(--color-subtle)] dark:border-[var(--color-subtle-dark)] mt-1.5 mb-1" />
+                        )}
+                        <p class="text-xs font-medium uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)] mt-1.5 mb-1">
+                        </p>
+                        <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 items-baseline">
+                          {monthPosts.map((post) => (
+                            <div class="group contents blog-row" data-category={post.data.category}>
+                              <time
+                                class="text-[var(--color-muted)] dark:text-[var(--color-muted-dark)] w-[5rem] text-right text-xs sm:text-sm whitespace-nowrap transition-colors duration-150 group-hover:text-[var(--color-accent)] dark:group-hover:text-[var(--color-accent-dark)] group-has-[a:focus-visible]:text-[var(--color-accent)] dark:group-has-[a:focus-visible]:text-[var(--color-accent-dark)]"
+                                datetime={new Date(post.data.date).toISOString()}
+                              >
+                                {new Date(post.data.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    month: "long",
+                                    day: "numeric",
+                                  }
+                                )}
+                              </time>
+                              <a
+                                href={`/blog/${post.id}/`}
+                                class="block transition-colors duration-150 hover:text-[var(--color-accent)] dark:hover:text-[var(--color-accent-dark)] focus-visible:text-[var(--color-accent)] dark:focus-visible:text-[var(--color-accent-dark)]"
+                              >
+                                <h3 class="font-semibold">
+                                  {post.data.title}
+                                </h3>
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            );
+          })
+      }
+    </div>
+  </div>
+</Base>
+
+<script is:inline>
+  (function () {
+    const buttons = document.querySelectorAll('.filter-btn');
+    const rows = document.querySelectorAll('.blog-row');
+    const monthGroups = document.querySelectorAll('.blog-month-group');
+    const yearGroups = document.querySelectorAll('.blog-year-group');
+    const activeClasses = [
+      'border-[var(--color-accent)]',
+      'bg-[var(--color-accent)]',
+      'text-white',
+      'dark:border-[var(--color-accent-dark)]',
+      'dark:bg-[var(--color-accent-dark)]',
+      'dark:text-[var(--color-bg-dark)]',
+    ];
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        buttons.forEach((x) => {
+          x.classList.remove(...activeClasses);
+        });
+        b.classList.add(...activeClasses);
+        const f = b.getAttribute('data-filter');
+        rows.forEach((r) => {
+          const c = r.getAttribute('data-category');
+          r.style.display = f === 'all' || c === f ? '' : 'none';
+        });
+        monthGroups.forEach((g) => {
+          const visible = g.querySelectorAll('.blog-row:not([style*="display: none"])').length;
+          g.style.display = visible === 0 ? 'none' : '';
+        });
+        yearGroups.forEach((g) => {
+          const visible = g.querySelectorAll('.blog-row:not([style*="display: none"])').length;
+          g.style.display = visible === 0 ? 'none' : '';
+        });
+      });
+    });
+  })();
+</script>
+

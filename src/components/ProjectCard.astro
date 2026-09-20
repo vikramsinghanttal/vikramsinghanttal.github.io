@@ -1,0 +1,46 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const detailHref = `/projects/${entry.id.replace(/\.md$/, '')}/`;
+---
+
+<a
+  href={detailHref}
+  class="group flex h-full flex-col rounded-lg border border-[var(--color-subtle)] p-5 transition-colors hover:border-[var(--color-accent)] dark:border-[var(--color-subtle-dark)] dark:hover:border-[var(--color-accent-dark)]"
+>
+  <div class="flex items-start justify-between gap-">
+    <h3
+      class="text-base font-medium transition-colors group-hover:text-[var(--color-accent)] dark:group-hover:text-[var(--color-accent-dark)]"
+    >
+      {data.title}
+    </h3>
+    <Icon
+      name="lucide:arrow-up-right"
+      class="h-4 w-4 shrink-0 text-[var(--color-muted)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--color-accent)] dark:text-[var(--color-muted-dark)] dark:group-hover:text-[var(--color-accent-dark)]"
+    />
+  </div>
+  <p class="mt-1 font-mono text-xs text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+    {data.period}
+  </p>
+  <p class="mt-3 flex-1 text-sm text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+    {data.summary}
+  </p>
+  {
+    data.tech.length > 0 && (
+      <ul class="mt-4 flex flex-wrap gap-1.5">
+        {data.tech.map((t) => (
+          <li class="rounded-sm border border-[var(--color-subtle)] px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-[var(--color-muted)] dark:border-[var(--color-subtle-dark)] dark:text-[var(--color-muted-dark)]">
+            {t}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</a>

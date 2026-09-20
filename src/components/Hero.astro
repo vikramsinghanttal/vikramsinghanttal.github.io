@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '@/site.config';
+import SocialLinks from './SocialLinks.astro';
+import Headshot from './Headshot.astro';
+---
+
+<section class="container-wide pt-16 pb-12 sm:pt-24 sm:pb-16">
+  <div class="flex flex-col gap-10 sm:flex-row sm:items-center sm:gap-12">
+    <div class="flex-1">
+      <p
+        class="mb-3 inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-[var(--color-accent)] dark:text-[var(--color-accent-dark)]"
+      >
+        <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-current"></span>
+        {site.role}
+      </p>
+      <p class="mt-1 max-w-2xl text-lg text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+        3GPP RAN1/2 Standardization on ISAC, Positioning and AI-RAN and Leading 6G System Simulations team at
+        {' '}<a class="link-quiet" href={site.links.TejasResearch} target="_blank" rel="noopener noreferrer">Tejas Networks</a> (2024).
+        I graduated from IIT Kanpur (2018), have worked for Intel India (2018), CEWiT at IIT Madras (2018), and was the Founder + CTO of a startup, Gigayasa Wireless (2021).
+      </p>
+      
+      <p class="mt-1 max-w-2xl text-sm text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+      <strong>Research interests</strong>: ISAC, Positioning, RAN Digital Twins, MIMO, Highly Optimized CUDA kernels, and Real-time GPU algorithm development for 6G AI-RAN.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a
+          href="/publications/"
+          class="inline-flex items-center gap-2 rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] dark:bg-[var(--color-accent-dark)] dark:text-[var(--color-bg-dark)] dark:hover:bg-[var(--color-accent-hover-dark)]"
+        >
+          <Icon name="lucide:book-open" class="h-4 w-4" />
+          Publications
+        </a>
+        <a
+          href="/Vikram_CV_July2026.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-md border border-[var(--color-subtle)] px-4 py-2 text-sm font-medium transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] dark:border-[var(--color-subtle-dark)] dark:hover:border-[var(--color-accent-dark)] dark:hover:text-[var(--color-accent-dark)]"
+        >
+          <Icon name="lucide:file-text" class="h-4 w-4" />
+          CV
+        </a>
+        <div class="ml-1">
+          <SocialLinks />
+        </div>
+      </div>
+    </div>
+    <div class="order-first sm:order-last">
+      <Headshot size="lg" />
+    </div>
+  </div>
+</section>

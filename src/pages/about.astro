@@ -1,0 +1,98 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/site.config';
+import { Icon } from 'astro-icon/components';
+import ExperienceList from '@/components/ExperienceList.astro';
+
+---
+
+<Base>
+  <section class="container-wide py-12 sm:py-0">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-lg font-bold uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+        About
+      </h2>
+  <article class="container-prose py-4 sm:py-8 prose-custom">
+    </div>
+    <p>
+      I'm a {site.role} at {' '}<a class="link-quiet" href={site.links.TejasResearch} target="_blank" rel="noopener noreferrer">{site.org}</a>, 
+      where I spend most of my days doing intense hands-on work somewhere in the space between research, engineering, and standardization. A good 
+      part of that time goes into 3GPP RAN1/RAN2 standardization, where the conversations tend to revolve around integrated sensing and communications 
+      (ISAC), sensing assisted communication (SAC), positioning, AI-RAN, RAN digital twin. The less glamorous part, and probably the most useful, is 
+      turning ideas into intellectual property that can survive both simulation and standardization and hopefully can be reduced to practice someday.
+    </p>
+
+    <p>
+      What time is left, including weekends, tends to go toward work that sits closer to the hardware. I help build and maintain a CUDA-C++/Python 
+      platform for large-scale wireless system simulations. That means spending a lot of time thinking about memory movement, arithmetic intensity, 
+      GPU throughput, and where performance disappears when it shouldn't. Much of the effort goes into writing optimized CUDA kernels and real-time 
+      GPU algorithms for AI-RAN. The goal is simple: make simulations faster, more scalable, and faithful to the systems being modeled. 
+      Getting there, as usual, is less simple.
+    </p>
+
+    <p>
+      I grew up in a village near Ambala, in North Haryana, in a farming family. I loved the farms, the cattle, and mathematics in roughly equal measure. 
+      Most afternoons until sunset went to grazing buffalos and working the fields alongside my family. It was a simple life, and a grounding one. The 
+      real turning point was IIT Kanpur, where I completed a master's in Signal Processing and Communications, met some genuinely kind and capable people, 
+      and was advised by Prof. Aditya K. Jagannatham. That time and supervision shaped most of what I went on to do.
+    </p>
+    
+    <p>
+      After IITK I joined Intel's SDG group in Bangalore, but left fairly quickly. The work wasn't what I had hoped for. In October 2018 I joined CEWiT 
+      (Centre of Excellence in Wireless Technology), where I found on cutting edge research, development and standardization work related to 5G networks. 
+      I contributed to 3GPP standardization on positioning from 2018 through late 2021. I focused on the physical layer and MAC-Scheduler side of 5G, 
+      mostly positioning, sidelink, and AI-ML. That meant designing every single positioning algorithm for the 5G physical layer, building and maintaining 
+      a system simulator covering 3GPP releases 15 through 18, and developing AI-ML models for channel estimation, symbol demodulation, LDPC decoding, and 
+      inter-frequency measurement prediction.
+    </p>
+    <p>
+      In December 2021 I left CEWiT to start Gigayasa Wireless. The idea was to build a GPU-scalable, 3GPP-compliant simulation tool for 5G/5G-Advanced/6G 
+      networks with native AI-in-RAN support, capable of running end-to-end system simulations within an hour. I began by implementing the 38.xxx series 
+      standards in Python, line by line, using that to validate the tool against real-world 5G scenarios. By early 2022 I was leading a team, turning 
+      that work into production grade software for the ease of usage, deployment and support and integrating AI-ML models for beam prediction, CSI compression 
+      and reconstruction, and positioning. We couldn't scale the business to where we had hoped, and eventually wound down.
+    </p>
+    <p>
+      In August 2024 I joined Tejas Networks, picking up where I had left off: system simulations and 3GPP standardization for 5G-Advanced and 6G.
+    </p>
+    <div class="flex items-baseline justify-between">
+    <h2 class="text-lg font-bold uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+      Outside work
+    </h2>
+    <article class="py-4 sm:py-6 prose-custom"></article>
+    </div>
+    <p>
+      I live in Bengaluru. Outside of work I cook, read, and write occasionally on the {' '}<a class="link" href="/blog/">blogs page</a> about telecom, AI, 
+      quantum communications, GPU scaling, C/C++ CUDA Kernels, system simulation, and the occasional lighthearted take on startups.
+
+    </p>
+    <div class="flex items-baseline justify-between">
+    <h2 class="text-lg font-bold uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+      Contact
+    </h2>
+    <article class="py-4 sm:py-6 prose-custom"></article>
+    </div>
+
+      <p class="mt-3 text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+      The fastest way to reach me is {' '}<a class="link" href={site.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>. 
+      I'm also on {' '}<a class="link" href={site.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>{' '} and {' '}<a class="link" href={site.social.scholar} target="_blank" rel="noopener noreferrer">Google Scholar</a>.
+      If email's your preference, send a note to {' '}<a class="link" href={`mailto:${site.email}`}>{site.email}</a>. 
+      My brief technical description can be found in my <a class="link inline-flex items-center gap-1.5" href="/Vikram_CV_July2026.pdf" target="_blank" rel="noopener noreferrer"> <Icon name="lucide:file-text" class="h-4 w-4" /> CV (PDF)
+      </a>      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
+        <a
+          href={site.social.linkedin}
+          target="_blank"
+          rel="noopener noreferrer me"
+          class="inline-flex items-center gap-2 rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] dark:bg-[var(--color-accent-dark)] dark:text-[var(--color-bg-dark)] dark:hover:bg-[var(--color-accent-hover-dark)]"
+        >
+          <Icon name="simple-icons:linkedin" class="h-4 w-4" />
+          Connect on LinkedIn
+        </a>
+        <p class="text-sm text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+          or a note to <a class="link" href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+      </div>
+  </article>
+  <ExperienceList />
+</Base>

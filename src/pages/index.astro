@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import PublicationItem from '@/components/PublicationItem.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { Icon } from 'astro-icon/components';
+import { site } from '@/site.config';
+
+const allPubs = await getCollection('publications');
+function pubSortKey(p: (typeof allPubs)[number]) {
+  return p.data.date?.getTime() ?? new Date(p.data.year, 0, 1).getTime();
+}
+const featuredPubs = allPubs
+  .filter((p) => p.data.featured)
+  .sort((a, b) => pubSortKey(b) - pubSortKey(a));
+
+const recentPubs = allPubs
+  .filter((p) => !p.data.featured)
+  .sort((a, b) => pubSortKey(b) - pubSortKey(a))
+  .slice(0, 5);
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base>
+  <Hero/>  
+  {
+    featuredProjects.length > 0 && (
+      <section class="container-wide py-12 sm:py-16">
+        <div class="flex items-baseline justify-between">
+          <h2 class="text-sm font-mono uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+            Featured Projects
+          </h2>
+          <a href="/projects/" class="link text-sm">All projects →</a>
+        </div>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredProjects.map((p) => <ProjectCard entry={p} />)}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="container-wide py-12 sm:py-16">
+    <div class="flex items-baseline justify-between">
+      <h2
+        class="text-sm font-mono uppercase tracking-wider text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]"
+      >
+        Selected Publications
+      </h2>
+      <a href="/publications/" class="link text-sm">All publications →</a>
+    </div>
+    <div class="mt-4 divide-y divide-[var(--color-subtle)] dark:divide-[var(--color-subtle-dark)]">
+      {[...featuredPubs, ...recentPubs.slice(0, Math.max(0, 6 - featuredPubs.length))].slice(0, 8).map((p) => (
+        <PublicationItem entry={p} />
+      ))}
+    </div>
+  </section>
+
+  <section class="container-wide pt-12 pb-20 sm:pt-16">
+    <div class="rounded-xl border border-[var(--color-subtle)] p-8 dark:border-[var(--color-subtle-dark)]">
+      <h2 class="text-2xl font-semibold tracking-tight">Get in touch</h2>
+      <p class="mt-3 text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+      For research collaborations, talks, or anything wireless-systems related, LinkedIn is the fastest way to reach me.
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
+        <a
+          href={site.social.linkedin}
+          target="_blank"
+          rel="noopener noreferrer me"
+          class="inline-flex items-center gap-2 rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-hover)] dark:bg-[var(--color-accent-dark)] dark:text-[var(--color-bg-dark)] dark:hover:bg-[var(--color-accent-hover-dark)]"
+        >
+          <Icon name="simple-icons:linkedin" class="h-4 w-4" />
+          Connect on LinkedIn
+        </a>
+        <p class="text-sm text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+          or a note to <a class="link" href={`mailto:${site.email}`}>{site.email}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

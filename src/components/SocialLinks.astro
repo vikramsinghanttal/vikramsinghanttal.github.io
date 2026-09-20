@@ -1,0 +1,40 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '@/site.config';
+
+interface Props {
+  size?: 'sm' | 'md';
+}
+
+const { size = 'md' } = Astro.props;
+const iconClass = size === 'sm' ? 'h-4 w-4' : 'h-5 w-5';
+const itemClass =
+  'inline-flex items-center justify-center rounded-md p-2 text-[var(--color-muted)] transition-colors hover:bg-[var(--color-subtle)] hover:text-[var(--color-accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] dark:text-[var(--color-muted-dark)] dark:hover:bg-[var(--color-subtle-dark)] dark:hover:text-[var(--color-accent-dark)]';
+
+const links: { label: string; href: string; icon: string }[] = [
+  { label: 'LinkedIn',        href: site.social.linkedin,   icon: 'simple-icons:linkedin' },
+  { label: 'GitHub',          href: site.social.github,     icon: 'simple-icons:github' },
+  { label: 'Google Scholar',  href: site.social.scholar,    icon: 'simple-icons:googlescholar' },
+  { label: 'Email',           href: `mailto:${site.email}`, icon: 'lucide:mail' },
+];
+if (site.social.orcid) 
+{
+  links.push({ label: 'ORCID', href: site.social.orcid, icon: 'simple-icons:orcid' });
+}
+---
+
+<nav aria-label="Social links" class="flex items-center gap-1">
+  {
+    links.map((l) => (
+      <a
+        href={l.href}
+        aria-label={l.label}
+        class={itemClass}
+        target={l.href.startsWith('http') ? '_blank' : undefined}
+        rel={l.href.startsWith('http') ? 'noopener noreferrer me' : undefined}
+      >
+        <Icon name={l.icon} class={iconClass} />
+      </a>
+    ))
+  }
+</nav>

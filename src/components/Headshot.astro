@@ -1,0 +1,54 @@
+---
+/**
+ * Headshot avatar.
+ *
+ * To use a real photo: drop a square JPG/PNG at `public/headshot.jpg`
+ * (square crop, ~600×600 minimum), then set USE_PHOTO to true.
+ */
+const USE_PHOTO = true;
+const PHOTO_SRC = '/Vikram_Headshot.jpeg';
+const INITIALS = 'VSA';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { size = 'lg', class: extraClass = '' } = Astro.props;
+const sizeClass =
+  size === 'lg' ? 'h-40 w-40 sm:h-48 sm:w-48' : size === 'md' ? 'h-24 w-24' : 'h-12 w-12';
+const initialsSize =
+  size === 'lg' ? 'text-5xl sm:text-6xl' : size === 'md' ? 'text-2xl' : 'text-base';
+---
+
+{
+  USE_PHOTO ? (
+    <img
+      src={PHOTO_SRC}
+      alt="Vikram Singh Anttal"
+      width="395"
+      height="495"
+      loading="eager"
+      decoding="async"
+      class:list={[
+        'rounded-full object-cover object-top ring-1 ring-[var(--color-subtle)] dark:ring-[var(--color-subtle-dark)]',
+        sizeClass,
+        extraClass,
+      ]}
+    />
+  ) : (
+    <div
+      aria-label="Vikram Singh Anttal"
+      class:list={[
+        'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-subtle)] dark:ring-[var(--color-subtle-dark)]',
+        sizeClass,
+        extraClass,
+      ]}
+      style="background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--color-accent) 40%, transparent), transparent 65%), linear-gradient(135deg, var(--color-subtle), color-mix(in srgb, var(--color-accent) 10%, var(--color-subtle)));"
+    >
+      <span class:list={['font-mono font-semibold tracking-tight text-[var(--color-fg)] opacity-80 dark:text-[var(--color-fg-dark)]', initialsSize]}>
+        {INITIALS}
+      </span>
+    </div>
+  )
+}

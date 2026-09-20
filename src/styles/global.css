@@ -1,0 +1,190 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-bg: #fafaf9;
+  --color-fg: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-subtle: #e7e5e4;
+  --color-accent: #0d7377;
+  --color-accent-hover: #14a7a7;
+
+  --color-bg-dark: #0a0a0a;
+  --color-fg-dark: #ededed;
+  --color-muted-dark: #9a9a9a;
+  --color-subtle-dark: #232323;
+  --color-accent-dark: #2dd4bf;
+  --color-accent-hover-dark: #5eead4;
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  .dark body {
+    background: var(--color-bg-dark);
+    color: var(--color-fg-dark);
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  .dark ::selection {
+    background: var(--color-accent-dark);
+    color: var(--color-bg-dark);
+  }
+
+  a {
+    color: inherit;
+    text-decoration-skip-ink: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-3xl px-6;
+  }
+
+  .container-wide {
+    @apply mx-auto w-full max-w-5xl px-6;
+  }
+
+  .link {
+    @apply underline decoration-1 underline-offset-4 transition-colors;
+    text-decoration-color: var(--color-subtle);
+  }
+  .link:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+  .dark .link {
+    text-decoration-color: var(--color-subtle-dark);
+  }
+  .dark .link:hover {
+    color: var(--color-accent-dark);
+    text-decoration-color: var(--color-accent-dark);
+  }
+
+  /* Quiet link: indistinguishable from surrounding text until hover. */
+  .link-quiet {
+    @apply rounded-sm transition-colors;
+    color: inherit;
+    text-decoration: none;
+  }
+  .link-quiet:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-accent);
+  }
+  .dark .link-quiet:hover {
+    color: var(--color-accent-dark);
+    text-decoration-color: var(--color-accent-dark);
+  }
+  .link-quiet:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .dark .link-quiet:focus-visible {
+    outline-color: var(--color-accent-dark);
+  }
+
+  .prose-custom {
+    @apply max-w-none text-base leading-relaxed;
+  }
+  .prose-custom h1 {
+    @apply mt-8 mb-4 text-3xl font-semibold tracking-tight;
+  }
+  .prose-custom h2 {
+    @apply mt-10 mb-3 text-2xl font-semibold tracking-tight;
+  }
+  .prose-custom h3 {
+    @apply mt-8 mb-2 text-xl font-semibold tracking-tight;
+  }
+  .prose-custom p {
+    @apply my-4;
+  }
+  .prose-custom a {
+    @apply underline decoration-1 underline-offset-4 transition-colors;
+    text-decoration-color: var(--color-subtle);
+  }
+  .prose-custom a:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+  .dark .prose-custom a {
+    text-decoration-color: var(--color-subtle-dark);
+  }
+  .dark .prose-custom a:hover {
+    color: var(--color-accent-dark);
+    text-decoration-color: var(--color-accent-dark);
+  }
+  .prose-custom ul {
+    @apply my-4 list-disc space-y-1 pl-6;
+  }
+  .prose-custom ol {
+    @apply my-4 list-decimal space-y-1 pl-6;
+  }
+  .prose-custom code {
+    @apply rounded px-1 py-0.5 text-[0.9em];
+    background: var(--color-subtle);
+    font-family: var(--font-mono);
+  }
+  .dark .prose-custom code {
+    background: var(--color-subtle-dark);
+  }
+  .prose-custom pre {
+    @apply my-6 overflow-x-auto rounded-lg p-4 text-sm;
+    background: var(--color-subtle);
+  }
+  .dark .prose-custom pre {
+    background: var(--color-subtle-dark);
+  }
+  .prose-custom pre code {
+    @apply bg-transparent p-0;
+  }
+  .prose-custom blockquote {
+    @apply my-6 border-l-2 pl-4 italic;
+    border-color: var(--color-accent);
+  }
+  .prose-custom hr {
+    @apply my-10;
+    border-color: var(--color-subtle);
+  }
+  .dark .prose-custom hr {
+    border-color: var(--color-subtle-dark);
+  }
+}

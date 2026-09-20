@@ -1,0 +1,120 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+import { formatAuthors, formatPublicationDate, PUBLICATION_TYPE_LABEL } from '@/lib/format';
+
+interface Props {
+  entry: CollectionEntry<'publications'>;
+  compact?: boolean;
+}
+
+const { entry, compact = false } = Astro.props;
+const { data } = entry;
+const authorsHtml = formatAuthors(data.authors);
+const dateStr = formatPublicationDate(data.date, data.year);
+const doiUrl = data.doi
+  ? data.doi.startsWith('http')
+    ? data.doi
+    : `https://doi.org/${data.doi}`
+  : undefined;
+const detailHref = `/publications/${entry.id.replace(/\.md$/, '')}/`;
+---
+
+<article class="group py-4">
+  <div class="flex items-baseline justify-between gap-4">
+    <a
+      href={detailHref}
+      class="text-base font-medium leading-snug transition-colors group-hover:text-[var(--color-accent)] dark:group-hover:text-[var(--color-accent-dark)]"
+    >
+      {data.title}
+    </a>
+    <span
+      class="font-mono text-xs whitespace-nowrap text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]"
+    >
+      {dateStr}
+    </span>
+  </div>
+  <p
+    class="mt-1 text-sm text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]"
+    set:html={authorsHtml}
+  />
+  <p class="mt-0.5 text-sm italic text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+    {data.venue}
+    <span
+      class="ml-2 inline-block rounded-sm border border-[var(--color-subtle)] px-1.5 py-0.5 font-mono text-[10px] tracking-wider uppercase not-italic text-[var(--color-muted)] dark:border-[var(--color-subtle-dark)]"
+    >
+      {PUBLICATION_TYPE_LABEL[data.type] ?? data.type}
+    </span>
+  </p>
+  {
+    !compact && (
+      <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+        {data.pdf && (
+          <a
+            href={data.pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="lucide:file-text" class="h-3 w-3" /> PDF
+          </a>
+        )}
+        {doiUrl && (
+          <a
+            href={doiUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="lucide:link" class="h-3 w-3" /> DOI
+          </a>
+        )}
+        {data.arxiv && (
+          <a
+            href={data.arxiv}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="simple-icons:arxiv" class="h-3 w-3" /> arXiv
+          </a>
+        )}
+        {data.code && (
+          <a
+            href={data.code}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="simple-icons:github" class="h-3 w-3" /> Code
+          </a>
+        )}
+        {data.url && (
+          <a
+            href={data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="lucide:external-link" class="h-3 w-3" /> Link
+          </a>
+        )}
+        {data.youtube && (
+          <a
+            href={data.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link inline-flex items-center gap-1"
+          >
+            <Icon name="lucide:youtube" class="h-3 w-3" /> Video
+          </a>
+        )}
+        {data.tags.map((t) => (
+          <span class="font-mono text-[var(--color-muted)] dark:text-[var(--color-muted-dark)]">
+            #{t}
+          </span>
+        ))}
+      </div>
+    )
+  }
+</article>
