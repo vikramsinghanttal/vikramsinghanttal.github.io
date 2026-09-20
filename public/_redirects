@@ -1,0 +1,19 @@
+# Hugo/Wowchemy → Astro path remap. Status 301 (permanent).
+
+# Singular section names → plural
+/publication/*    /publications/:splat/    301
+/project/*        /projects/:splat/        301
+/post/*           /blog/                   301
+/talk/*           /                        301
+/slides/*         /                        301
+
+# CV location
+/uploads/resume.pdf    /Vikram_CV_July2026.pdf    301
+
+# Legacy /me/* "Start Here" tree → about page (the recommendations subpages are gone)
+/me                    /about/     301
+/me/*                  /about/     301
+/start-here            /about/     301
+/start-here/*          /about/     301
+
+# Anchor-based home links from the old Wowchemy nav are page-internal, no rewrite needed.
