@@ -1,3 +1,10 @@
+# Single-package repo (not a real monorepo); declared explicitly because
+# some pnpm versions error ("packages field missing or empty", e.g. from
+# `pnpm store path` used by actions/setup-node's cache step) when a
+# pnpm-workspace.yaml exists without a `packages` field.
+packages:
+  - "."
+
 allowBuilds:
   esbuild: false
   sharp: false
